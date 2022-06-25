@@ -1,6 +1,9 @@
 # See live Demo [here](https://hall-of-chadness.netlify.app/)
 
 
+![HomePage](https://user-images.githubusercontent.com/56496945/175783218-78ecd690-34ec-49f2-9da7-798288f9e330.jpeg)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
