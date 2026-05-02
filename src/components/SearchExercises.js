@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import HorizontalScrollbar from "./HorizontalScrollbar";
+import { fetchBodyPartList, fetchAllExercises } from "../utils/api";
 
 const SearchExercises = ({setExercises,bodyPart,setBodyPart}) => {
     const [search, setSearch] = useState("");
@@ -9,18 +10,7 @@ const SearchExercises = ({setExercises,bodyPart,setBodyPart}) => {
 
     useEffect(() => {
         const fetchExercisesData = async () => {
-            const bodyPartsData = await fetch(
-                `https://exercisedb.p.rapidapi.com/exercises/bodyPartList`,
-                {
-                    method: "GET",
-                    headers: {
-                        "X-RapidAPI-Key":
-                            "",
-                        "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
-                    },
-                }
-            );
-            const data = await bodyPartsData.json();
+            const data = await fetchBodyPartList();
             setBodyParts(['all',...data]);
         };
 
@@ -28,19 +18,7 @@ const SearchExercises = ({setExercises,bodyPart,setBodyPart}) => {
     }, []);
     const handleSearch = async () => {
         if (search) {
-            const exercisesData = await fetch(
-                `https://exercisedb.p.rapidapi.com/exercises`,
-                {
-                    method: "GET",
-                    headers: {
-                        "X-RapidAPI-Key":
-                            "",
-                        "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
-                    },
-                }
-            );
-
-            const data = await exercisesData.json();
+            const data = await fetchAllExercises();
             const searchedExercises = data.filter(
                 (exercise) =>
                     exercise.name.toLowerCase().includes(search) ||

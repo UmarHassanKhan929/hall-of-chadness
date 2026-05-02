@@ -4,6 +4,12 @@ import { Box } from "@mui/material";
 import Detail from "../components/Detail";
 import ExerciseVideos from "../components/ExerciseVideos";
 import SimilarExercises from "../components/SimilarExercises";
+import {
+    fetchExerciseById,
+    fetchYoutubeVideos,
+    fetchExercisesByTarget,
+    fetchExercisesByEquipment,
+} from "../utils/api";
 
 const ExerciseDetail = () => {
     const [exerciseDetail, setExerciseDetail] = useState({});
@@ -16,42 +22,16 @@ const ExerciseDetail = () => {
 
     useEffect(() => {
         const fetchExerciseDetail = async () => {
-            const exerciseDBUrl = "https://exercisedb.p.rapidapi.com";
-            const youtubeSearchUrl =
-                "https://youtube-search-and-download.p.rapidapi.com";
-
-            const edbuoptions = {
-                method: "GET",
-                headers: {
-                    "X-RapidAPI-Key":
-                        "",
-                    "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
-                },
-            };
-            const ysuoptions = {
-                method: "GET",
-                headers: {
-                    "X-RapidAPI-Key":
-                        "",
-                    "X-RapidAPI-Host":
-                        "youtube-search-and-download.p.rapidapi.com",
-                },
-            };
-
-            const exerciseData = await fetch(`${exerciseDBUrl}/exercises/exercise/${id}`, edbuoptions);
-            const exerciseDetailData = await exerciseData.json();
+            const exerciseDetailData = await fetchExerciseById(id);
             setExerciseDetail(exerciseDetailData);
 
-            const exerciseVData = await fetch(`${youtubeSearchUrl}/search?query=${exerciseDetailData.name}`, ysuoptions);
-            const exerciseVideoData = await exerciseVData.json();
+            const exerciseVideoData = await fetchYoutubeVideos(exerciseDetailData.name);
             setExerciseVideos(exerciseVideoData.contents);
 
-            const targetMuscleData = await fetch(`${exerciseDBUrl}/exercises/target/${exerciseDetailData.target}`, edbuoptions);
-            const targetMuscleExerciseData = await targetMuscleData.json();
+            const targetMuscleExerciseData = await fetchExercisesByTarget(exerciseDetailData.target);
             setTargetMuscle(targetMuscleExerciseData);
 
-            const equipmentExercises = await fetch(`${exerciseDBUrl}/exercises/equipment/${exerciseDetailData.equipment}`, edbuoptions);
-            const equipmentExercisesData = await equipmentExercises.json();
+            const equipmentExercisesData = await fetchExercisesByEquipment(exerciseDetailData.equipment);
             setEquipmentExercise(equipmentExercisesData);
 
 

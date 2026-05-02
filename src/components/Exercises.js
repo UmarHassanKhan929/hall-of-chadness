@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react'
 import Pagination from '@mui/material/Pagination'
 import { Box,Stack,Typography } from '@mui/material'
 import ExerciseCard from './ExerciseCard'
+import { fetchAllExercises, fetchExercisesByBodyPart } from '../utils/api'
 
 const Exercises = ({exercises,setExercises,bodyPart}) => {
 
@@ -22,29 +23,9 @@ const Exercises = ({exercises,setExercises,bodyPart}) => {
       let exercisesData = [];
 
       if(bodyPart === 'all'){
-        const data = await fetch(
-          `https://exercisedb.p.rapidapi.com/exercises`,
-          {
-              method: "GET",
-              headers: {
-                  "X-RapidAPI-Key":
-                      "",
-                  "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
-              },
-          });
-          exercisesData = await data.json();
+        exercisesData = await fetchAllExercises();
       }else{
-        const data = await fetch(
-          `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
-          {
-              method: "GET",
-              headers: {
-                  "X-RapidAPI-Key":
-                      "",
-                  "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
-              },
-          });
-          exercisesData = await data.json();
+        exercisesData = await fetchExercisesByBodyPart(bodyPart);
       }
 
       setExercises(exercisesData);
